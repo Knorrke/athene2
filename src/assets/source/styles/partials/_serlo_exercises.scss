@@ -1,17 +1,58 @@
 // Single Choice
 .single-choice-group {
   .single-choice-answer-group {
-
-    label {
-      width: 100%;
+    p {
+      margin: 0;
+      padding: 0;
     }
 
     .single-choice-answer-content {
+      width: 100%;
+      border: 0 none;
+      color: #000;
+      font-weight: bold;
+      word-wrap: break-word;
 
+      .single-choice-answer-choice {
+        position:absolute;
+        clip: rect(0px 0px 0px 0px);
+        margin: 1rem 0.5rem 2rem 0;
+
+      }
+
+
+      &.button-default {
+        background-color: $lighterGray;
+
+        &.active, &:hover {
+          background-color: #D9EDF7;
+          box-shadow: none;
+        }
+      }
     }
 
     .single-choice-answer-feedback {
-      padding: 15px 10px;
+      padding: 5px;
+    }
+  }
+
+  .btn-group {
+    width: 100%;
+  }
+
+  .single-choice-solution {
+    margin: 15px 0;
+    padding: 8px 15px 10px;
+    width: 100%;
+    background-color: #D9EDF7;
+
+    .solution {
+      display: inline-block;
+    }
+    .single-choice-submit {
+      float: right !important;
+      border: 0 none;
+      font-size: 14px;
     }
   }
 }
