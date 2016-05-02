@@ -3,6 +3,11 @@
 {% set hint = entity.getChildren('link', 'text-hint').first() %}
 {% set singleChoices = singleChoice().fetchSingleChoice(entity) %}
 {% set multipleChoices = multipleChoice().fetchMultipleChoice(entity) %}
+{% set rightContent = 'Right!' | trans %}
+{% set defaultFeedback = '<p>' ~ rightContent ~ '</p>' %}
+{% set feedbackContent = '' %}
+{% set feedbackContent = markdown().toHtml(singleChoice().fetchPositiveFeedback(entity)) %}
+{% set positiveFeedback = feedbackContent ? feedbackContent : defaultFeedback %}
 {% set inputChallenge = inputChallenge().fetchInput(entity) %}
 <article itemscope itemtype="http://schema.org/Article">
     <section class="row">
@@ -25,6 +30,12 @@
                     {% include 'entity/view/default' with {'entity': answer['entity'], 'right': answer['right'], 'parent': entity} only %}
                 {% endfor %}
                 </div>
+                <div class="row">
+                    <div class="col-xs-12 single-choice-answer-feedback positive pull-right"
+                            style="visibility: hidden">
+                        {{ positiveFeedback | raw }}
+                    </div>
+                </div>
                 <div class="single-choice-solution">
                     {% if solution %}
                         <div class="solution collapsed" data-toggle="collapse"
@@ -36,6 +47,9 @@
                     <button class="btn btn-primary btn-xs single-choice-submit pull-right">
                         <span class="fa fa-check-circle">
                             {{ 'Check' | trans }}
+                        </span>
+                        <span class="fa fa-smile-o">
+                            {{ 'Correct!' |trans }}
                         </span>
                     </button>
                     <div style="clear:both;"></div>

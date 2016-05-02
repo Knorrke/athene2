@@ -1,7 +1,6 @@
 {% set revision = entity.getCurrentRevision() %}
-{% set rightContent = 'Right!' | trans %}
 {% set wrongContent = 'Wrong.' | trans %}
-{% set defaultFeedback = '<p>' ~ (right ? rightContent : wrongContent) ~ '</p>' %}
+{% set defaultFeedback = '<p>' ~ wrongContent ~ '</p>' %}
 {% set displayContent = 'This answer has been created but no content has been added yet or it is pending approval.' | trans %}
 {% set feedbackContent = '' %}
 {% if revision %}
@@ -17,8 +16,10 @@
                name="single-choice-answer-choice-{{  parent.getID() }}"/>
         {{ displayContent | raw }}
     </label>
-    <div class="single-choice-answer-feedback alert alert-{{ right ? 'success' : 'warning' }}"
-         style="display: none;">
+    {% if not right %}
+    <div class="single-choice-answer-feedback alert alert-warning"
+         style="visibility: hidden">
         {{ feedback | raw }}
     </div>
+    {% endif %}
 </div>

@@ -25,14 +25,19 @@
         background-color: $lighterGray;
 
         &.active, &:hover {
-          background-color: #D9EDF7;
+          background-color: $infoBlue;
           box-shadow: none;
         }
       }
     }
+  }
 
-    .single-choice-answer-feedback {
-      padding: 5px;
+  .single-choice-answer-feedback {
+    padding: 5px;
+    display: none;
+
+    .positive {
+      color: $serloBlue;
     }
   }
 
@@ -44,15 +49,46 @@
     margin: 15px 0;
     padding: 8px 15px 10px;
     width: 100%;
-    background-color: #D9EDF7;
 
+    .single-choice-submit {
+      display: none;
+    }
     .solution {
       display: inline-block;
     }
-    .single-choice-submit {
-      float: right !important;
-      border: 0 none;
-      font-size: 14px;
+  }
+
+  &.active{
+    .single-choice-solution {
+      background-color: $infoBlue;
+
+      .single-choice-submit {
+        display: block;
+        border: 0 none;
+        font-size: 14px;
+
+        &.btn-success {
+          .fa-check-circle {
+            display: none;
+          }
+          .fa-smile-o {
+            display: block;
+          }
+        }
+
+        &.btn-primary {
+          .fa-check-circle {
+            display : block;
+          }
+          .fa-smile-o {
+            display: none;
+          }
+        }
+      }
+    }
+
+    .single-choice-answer-feedback {
+        display:block;
     }
   }
 }
