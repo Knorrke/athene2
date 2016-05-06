@@ -36,8 +36,10 @@
     padding: 5px;
     display: none;
 
-    .positive {
-      color: $serloBlue;
+    &.positive {
+      color: ;
+      text-align: right;
+      font-weight: bold;
     }
   }
 
@@ -67,22 +69,11 @@
         border: 0 none;
         font-size: 14px;
 
-        &.btn-success {
-          .fa-check-circle {
-            display: none;
-          }
-          .fa-smile-o {
-            display: block;
-          }
+        .fa-check-circle, &.btn-success .fa-smile-o {
+          display : block;
         }
-
-        &.btn-primary {
-          .fa-check-circle {
-            display : block;
-          }
-          .fa-smile-o {
-            display: none;
-          }
+        .fa-smile-o, &.btn-success .fa-check-circle {
+          display: none;
         }
       }
     }
