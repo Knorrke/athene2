@@ -49,7 +49,11 @@ class SingleChoiceHelper extends AbstractHelper
      */
     public function fetchPositiveFeedback(EntityInterface $entity) {
         foreach ($entity->getChildren('link', 'single-choice-right-answer') as $positive) {
-            return $positive->getCurrentRevision()->get('feedback');
+            if ($positive->hasCurrentRevision()) {
+                return $positive->getCurrentRevision()->get('feedback');
+            } else {
+                return '';
+            }
         }
     }
 }

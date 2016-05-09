@@ -24,7 +24,7 @@
     </section>
     {% if singleChoices|length > 0 %}
         <section>
-            <form class="single-choice-group">
+            <form class="single-choice-group {{ singleChoices|length>4 ? 'extended' }}">
                 <div class="row btn-group" data-toggle="buttons">
                 {% for answer in singleChoices %}
                     {% include 'entity/view/default' with {'entity': answer['entity'], 'right': answer['right'], 'parent': entity} only %}
@@ -83,7 +83,7 @@
             <a class="collapse-hide-label">{% trans %} Hide hint {% endtrans %}<span class="dropup"><span class="caret"></span></span></a>
         </div>
     {% endif %}
-    {% if singleChoice|length == 0 and solution %}
+    {% if singleChoices|length == 0 and solution %}
         <div class="collapsed" data-toggle="collapse"
              data-target="#solution-{{ solution.getId() }}">
             <a class="collapse-show-label">{% trans %} Show solution {% endtrans %}<span class="caret"></span></a>

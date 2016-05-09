@@ -1,14 +1,54 @@
-/*global define*/
+/*global define, MathJax*/
 define(['jquery'], function ($) {
     "use strict";
     var SingleChoice;
 
     SingleChoice = function () {
 
+        function checkHeights($self) {
+            var totalWidth = 0,
+                changed = false;
+
+            $('.single-choice-answer-content', $self).each(function () {
+                if ($(this).height() > 35) {
+                    if (!$self.hasClass('extended')) {
+                        changed = true;
+                        $self.addClass('extended');
+                    }
+                    return false;
+                }
+                totalWidth += $(this).width();
+            });
+
+            if (totalWidth > $self.width()) {
+                if (!$self.hasClass('extended')) {
+                    changed = true;
+                    $self.addClass('extended');
+                }
+            }
+
+            return changed;
+        }
+
+        function handleResize($self) {
+            MathJax.Hub.Queue(function () {
+                if (checkHeights($self)) {
+                    MathJax.Hub.Queue(['Reprocess', MathJax.Hub]);
+                }
+            });
+        }
+
         return $(this).each(function () {
             var $self = $(this);
 
+            handleResize($self);
+
+            $(window).bind('resizeDelay', function () {
+                handleResize($self);
+            });
+
             $self.click(function () {
+                $('.single-choice-group').removeClass('active');
                 $self.addClass('active');
             });
 
@@ -18,7 +58,11 @@ define(['jquery'], function ($) {
                     $submit = $('.single-choice-submit', $self),
                     $feedback;
 
-                $('.single-choice-answer-feedback', $self).css('visibility', 'hidden');
+                if ($self.hasClass('extended')) {
+                    $('.single-choice-answer-feedback', $self).hide();
+                } else {
+                    $('.single-choice-answer-feedback', $self).css('visibility', 'hidden');
+                }
 
                 $('.single-choice-answer-content', $self).removeClass('btn-success btn-warning').addClass('button-default');
                 $submit.removeClass('btn-success btn-warning');
@@ -42,6 +86,8 @@ define(['jquery'], function ($) {
 
                     $feedback = $selected.siblings('.single-choice-answer-feedback');
                 }
+
+                $feedback.show();
                 $feedback.css('visibility', 'visible');
                 return false;
             });

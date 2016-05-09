@@ -1,5 +1,10 @@
 // Single Choice
 .single-choice-group {
+  &.extended {
+    .col-sm-3 {
+      width: 100%;
+    }
+  }
   .single-choice-answer-group {
     p {
       margin: 0;
@@ -10,8 +15,9 @@
       width: 100%;
       border: 0 none;
       color: #000;
-      font-weight: bold;
-      word-wrap: break-word;
+      min-height: 35px;
+      white-space: normal;
+      margin: 5px 0 0;
 
       .single-choice-answer-choice {
         position:absolute;
@@ -28,6 +34,10 @@
           background-color: $infoBlue;
           box-shadow: none;
         }
+      }
+
+      &.btn-warning {
+        background-color: $infoOrange;
       }
     }
   }
@@ -69,6 +79,10 @@
         border: 0 none;
         font-size: 14px;
 
+        &.btn-warning {
+          background-color: $infoOrange;
+        }
+
         .fa-check-circle, &.btn-success .fa-smile-o {
           display : block;
         }
@@ -78,8 +92,11 @@
       }
     }
 
+    &.extended .single-choice-answer-feedback{
+      display: none;
+    }
     .single-choice-answer-feedback {
-        display:block;
+        display: block;
     }
   }
 }
