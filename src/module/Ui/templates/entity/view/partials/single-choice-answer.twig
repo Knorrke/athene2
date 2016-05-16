@@ -17,8 +17,10 @@
         {{ displayContent | raw }}
     </label>
     {% if not right %}
-    <div class="single-choice-answer-feedback alert alert-warning collapse">
-        {{ feedback | raw }}
+    <div class="single-choice-answer-feedback collapse">
+        <div class="alert alert-warning">
+            {{ feedback | raw }}
+        </div>
     </div>
     {% endif %}
 </div>

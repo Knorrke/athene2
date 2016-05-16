@@ -5,58 +5,62 @@ define(['jquery'], function ($) {
 
     SingleChoice = function () {
 
-        function checkHeights($singleChoice) {
+        function checkDimensions($self) {
             var totalWidth = 0,
                 changed = false;
 
-            $('.single-choice-answer-content', $singleChoice).each(function () {
-                if ($singleChoice.hasClass('extended')) return false;
-
-                if ($(this).height() > 35) {
+            $('.single-choice-answer-content', $self).each(function () {
+                totalWidth += $(this).width();
+                if (totalWidth > $self.width() || $(this).height() > 35) {
                     changed = true;
-                    $singleChoice.addClass('extended');
+                    $self.addClass('extended');
                     return false;
                 }
-                totalWidth += $(this).width();
             });
-
-            if (totalWidth > $singleChoice.width()) {
-                changed = true;
-                $singleChoice.addClass('extended');
-            }
 
             return changed;
         }
 
-        function handleResize($singleChoice) {
-            MathJax.Hub.Queue(function () {
-                if (checkHeights($singleChoice)) {
-                    MathJax.Hub.Queue(['Reprocess', MathJax.Hub]);
-                }
-            });
+        function handleResize($self) {
+            if (!$self.hasClass('extended')) {
+                MathJax.Hub.Queue(function () {
+                    if (checkDimensions($self)) {
+                        MathJax.Hub.Queue(['Typeset', MathJax.Hub, $self.get(0)]);
+                    }
+                });
+            }
         }
 
         return $(this).each(function () {
             var $self = $(this),
                 $singleChoice = $('.single-choice-group', $self);
 
-            handleResize($singleChoice);
+            handleResize($self);
             $(window).bind('resizeDelay', function () {
-                handleResize($singleChoice);
+                handleResize($self);
             });
 
             $('.single-choice-answer-feedback', $singleChoice).collapse({
                 toggle: false
             });
 
-            function setActive() {
-                $('.single-choice-group').removeClass('active');
-                $singleChoice.addClass('active');
+            function clearState($excercise) {
+                $excercise.removeClass('active');
+                $('.active', $excercise).removeClass('active');
+                $('.single-choice-answer-feedback', $excercise).not('.positive').collapse('hide');
             }
+            function setActive() {
+                $('.excercise').not($self).each(function () {
+                    clearState($(this));
+                });
+                $self.addClass('active');
+            }
+
             $self.focusin(setActive);
             $self.click(setActive);
-            $self.focusout(setActive);
-
+            $self.focusout(function () {
+                clearState($self);
+            });
 
             $singleChoice.submit(function (e) {
                 e.preventDefault();
@@ -64,34 +68,36 @@ define(['jquery'], function ($) {
                     $submit = $('.single-choice-submit', $singleChoice),
                     $feedback;
 
-                $('.single-choice-answer-feedback', $singleChoice).collapse('hide');
-                $('.single-choice-answer-content', $singleChoice).removeClass('btn-success btn-warning').addClass('button-default');
-                $submit.removeClass('btn-success btn-warning');
-
+                if ($submit.hasClass('btn-success')) {
+                    return false;
+                }
 
                 if (Boolean($selected.attr('val'))) {
-                    $selected.removeClass('button-default').addClass('btn-success');
-                    $submit.removeClass('btn-primary').addClass('btn-success');
-
+                    changeClass($selected, 'button-default', 'btn-success');
+                    changeClass($submit, 'btn-primary', 'btn-success');
+                    $('.single-choice-answer-content', $self).not('.active').addClass('disabled');
                     $feedback = $('.single-choice-answer-feedback.positive', $singleChoice);
                 } else {
-                    $selected.removeClass('button-default').addClass('btn-warning');
-                    setTimeout(function () {
-                        $selected.removeClass('btn-warning').addClass('button-default');
-                    }, 1500);
-
-                    $submit.removeClass('btn-primary').addClass('btn-warning');
-                    setTimeout(function () {
-                        $submit.removeClass('btn-warning').addClass('btn-primary');
-                    }, 1500);
-
+                    changeClass($selected, 'button-default', 'btn-warning', 2000);
+                    changeClass($submit, 'btn-primary', 'btn-warning', 2000);
                     $feedback = $selected.siblings('.single-choice-answer-feedback');
                 }
 
+                $('.single-choice-answer-feedback', $singleChoice).not($feedback).collapse('hide');
                 $feedback.collapse('show');
                 return false;
             });
         });
+
+
+        function changeClass($element, oldClasses, newClasses, time) {
+            $element.removeClass(oldClasses).addClass(newClasses);
+            if (time) {
+                setTimeout(function () {
+                    $element.removeClass(newClasses).addClass(oldClasses);
+                }, time);
+            }
+        }
     };
 
     $.fn.SingleChoice = SingleChoice;
