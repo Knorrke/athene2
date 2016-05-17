@@ -44,22 +44,27 @@ define(['jquery'], function ($) {
                 toggle: false
             });
 
-            function clearState($excercise) {
-                $excercise.removeClass('active');
-                $('.active', $excercise).removeClass('active');
-                $('.single-choice-answer-feedback', $excercise).not('.positive').collapse('hide');
+            function clearState($exercise) {
+                $exercise.removeClass('active');
+                $('.active', $exercise).removeClass('active');
+                $('.single-choice-answer-feedback', $exercise).not('.positive').collapse('hide');
             }
             function setActive() {
-                $('.excercise').not($self).each(function () {
+                $('.exercise').not($self).each(function () {
                     clearState($(this));
                 });
                 $self.addClass('active');
             }
 
+            $self.attr("tabindex", -1);
+
             $self.focusin(setActive);
-            $self.click(setActive);
-            $self.focusout(function () {
-                clearState($self);
+
+            $self.focusout(function (e) {
+                // HACK: check if focusout was triggered by submitting
+                if (!$(e.relatedTarget).hasClass('single-choice-submit')) {
+                    clearState($self);
+                }
             });
 
             $singleChoice.submit(function (e) {
@@ -85,6 +90,8 @@ define(['jquery'], function ($) {
 
                 $('.single-choice-answer-feedback', $singleChoice).not($feedback).collapse('hide');
                 $feedback.collapse('show');
+                // HACK: focus again after submitting to remain focused
+                $self.focus();
                 return false;
             });
         });

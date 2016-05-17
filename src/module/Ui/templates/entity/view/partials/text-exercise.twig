@@ -9,7 +9,7 @@
 {% set feedbackContent = markdown().toHtml(singleChoice().fetchPositiveFeedback(entity)) %}
 {% set positiveFeedback = feedbackContent ? feedbackContent : defaultFeedback %}
 {% set inputChallenge = inputChallenge().fetchInput(entity) %}
-<article class="excercise" itemscope itemtype="http://schema.org/Article">
+<article class="exercise" itemscope itemtype="http://schema.org/Article">
     <section class="row">
         <div class="col-xs-10 col-sm-8 col-md-8" itemprop="articleBody">
             {{ markdown().toHtml(revision.get('content')) | raw }}
