@@ -1,4 +1,4 @@
-/*global define, MathJax*/
+/*global define*/
 define(['jquery', 'string', 'algebrajs', 'sounds'], function ($, S, A, play) {
     var InputChallenge = function ($container) {
         var type, solution, feedback, wrongInputs, self = this;
@@ -58,7 +58,6 @@ define(['jquery', 'string', 'algebrajs', 'sounds'], function ($, S, A, play) {
 
             self.$feedback.fadeOut(500, function () {
                 self.$feedback.html(feedback).fadeIn(500);
-                MathJax.Hub.Queue(['Typeset', MathJax.Hub, self.$feedback.get(0)]);
 
                 if (isCorrect) {
                     self.$feedback.addClass('positive');

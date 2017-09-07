@@ -1,4 +1,4 @@
-/*global define, MathJax*/
+/*global define*/
 define(['jquery'], function ($) {
     "use strict";
     var ToggleAction;
@@ -46,10 +46,6 @@ define(['jquery'], function ($) {
                     if (!$base.length) {
                         $base = $target;
                     }
-                    $target
-                        .one('show.bs.collapse', function () {
-                            MathJax.Hub.Queue(['Reprocess', MathJax.Hub, $target.get()]);
-                        });
                 }
             }
         });

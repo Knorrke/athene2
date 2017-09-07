@@ -1,4 +1,4 @@
-/*global define, MathJax*/
+/*global define*/
 define(['jquery'], function ($) {
     "use strict";
     var Spoiler;
@@ -16,11 +16,6 @@ define(['jquery'], function ($) {
                     icon.toggleClass('fa-caret-square-o-up');
                     icon.toggleClass('fa-caret-square-o-down');
                     return;
-                });
-            $('> .spoiler-teaser', this)
-                .one('click', function () {
-                    var $content = $(this).next('.spoiler-content');
-                    MathJax.Hub.Queue(['Reprocess', MathJax.Hub, $content.get()]);
                 });
         });
     };

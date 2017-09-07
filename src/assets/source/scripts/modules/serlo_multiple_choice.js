@@ -1,44 +1,12 @@
-/*global define, MathJax*/
+/*global define*/
 define(['jquery', 'sounds'], function ($, play) {
     "use strict";
     var MultipleChoice;
 
     MultipleChoice = function () {
-        function checkDimensions($self) {
-            var totalWidth = 0,
-                changed = false;
-
-            $('.multiple-choice-answer-content', $self).each(function () {
-                totalWidth += $(this).width();
-                if (totalWidth > $self.width() || $(this).height() > 35) {
-                    changed = true;
-                    $self.addClass('extended');
-                    return false;
-                }
-            });
-
-            return changed;
-        }
-
-        function handleResize($self) {
-            if (!$self.hasClass('extended')) {
-                MathJax.Hub.Queue(['Typeset', MathJax.Hub, $self.get(0)]);
-                MathJax.Hub.Queue(function () {
-                    if (checkDimensions($self)) {
-                        MathJax.Hub.Queue(['Reprocess', MathJax.Hub, $self.get(0)]);
-                    }
-                });
-            }
-        }
-
         return $(this).each(function () {
             var $self = $(this),
                 $group = $('.multiple-choice-group', $self);
-
-            handleResize($self);
-            $(window).bind('resizeDelay', function () {
-                handleResize($self);
-            });
 
             $('.multiple-choice-answer-feedback, .multiple-choice-group-failure, .multiple-choice-group-success', $group).collapse({
                 toggle: false
